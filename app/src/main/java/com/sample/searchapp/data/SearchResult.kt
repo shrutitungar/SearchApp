@@ -11,6 +11,6 @@ data class SearchResult(
     @SerializedName("title")
     var title: String? = null,
 
-    @SerializedName("link")
-    var link: String? = null
+    @SerializedName("images")
+    var imageResult: List<ImageResult>
 ) : Serializable

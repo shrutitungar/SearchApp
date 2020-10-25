@@ -11,17 +11,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sample.searchapp.R;
 import com.sample.searchapp.data.SearchResult;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder> {
 
     private Context mContext;
-    private List<SearchResult> mImageList;
+    private List<SearchResult> mSearchResultList;
 
-    public SearchResultAdapter(Context context, List<SearchResult> imageList) {
+    public SearchResultAdapter(Context context, List<SearchResult> searchResultList) {
         mContext = context;
-        mImageList = imageList;
+        mSearchResultList = searchResultList;
     }
 
     @NonNull
@@ -33,6 +34,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
+        String imageUrl = mSearchResultList.get(position).getImageResult().get(0).getLink();
+        Picasso.get()
+                .load(imageUrl)
+                .into(holder.ivCover);
+
         holder.ivCover.setOnClickListener(view -> {
 
         });
@@ -40,7 +46,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public int getItemCount() {
-        return mImageList.size();
+        return mSearchResultList.size();
     }
 
     class SearchResultViewHolder extends RecyclerView.ViewHolder {

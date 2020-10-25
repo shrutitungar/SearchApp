@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sample.searchapp.R
+import com.sample.searchapp.data.SearchResponse
 import com.sample.searchapp.data.SearchResult
 import com.sample.searchapp.data.remote.APIResponse
 import com.sample.searchapp.ui.adapter.SearchResultAdapter
@@ -60,7 +61,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                     if (searchText != searchFor)
                         return@launch
 
-                    mSearchViewModel.getSearchResults(1, searchFor)
+                    mSearchViewModel.getSearchResponse(1, searchFor)
                 }
             }
 
@@ -77,7 +78,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             APIResponse.Status.SUCCESS -> {
                 progress_bar.visibility = View.GONE
                 if (apiResponse.data != null) {
-                    mSearchResultList = apiResponse.data as List<SearchResult>
+                   var searchResponse : SearchResponse = apiResponse.data as SearchResponse
+                    mSearchResultList = searchResponse.data
                     searchResultAdapter.notifyDataSetChanged()
                 }
             }

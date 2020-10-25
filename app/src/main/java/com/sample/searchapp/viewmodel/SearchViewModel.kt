@@ -17,11 +17,11 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
         return mSearchResultsLiveData
     }
 
-    fun getSearchResults(
+    fun getSearchResponse(
         pageCount: Int?,
         query: String?
     ) {
-        searchRepository?.getFilters(
+        searchRepository?.getSearchResponse(
             pageCount, query
         )?.subscribeOn(Schedulers.io())?.observeOn(AndroidSchedulers.mainThread())
             ?.doOnSubscribe {

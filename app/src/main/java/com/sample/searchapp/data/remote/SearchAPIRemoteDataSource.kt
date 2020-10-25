@@ -1,6 +1,6 @@
 package com.sample.searchapp.data.remote
 
-import com.sample.searchapp.data.SearchResult
+import com.sample.searchapp.data.SearchResponse
 import io.reactivex.Observable
 
 class SearchAPIRemoteDataSource {
@@ -8,10 +8,10 @@ class SearchAPIRemoteDataSource {
     var mSearchAPIEndPoint: SearchAPIEndPoint? =
         APIServiceGenerator().createService(SearchAPIEndPoint::class.java)
 
-    fun getSearchResult(
+    fun getSearchResponse(
         pageCount: Int?,
         query: String?
-    ): Observable<List<SearchResult>?>? {
-        return mSearchAPIEndPoint?.getSearchResults(pageCount, query)
+    ): Observable<SearchResponse?>? {
+        return mSearchAPIEndPoint?.getSearchResponse(pageCount, query)
     }
 }
