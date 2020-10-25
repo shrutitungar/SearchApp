@@ -20,9 +20,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     private Context mContext;
     private List<SearchResult> mSearchResultList;
 
-    public SearchResultAdapter(Context context, List<SearchResult> searchResultList) {
+    public SearchResultAdapter(Context context) {
         mContext = context;
-        mSearchResultList = searchResultList;
     }
 
     @NonNull
@@ -34,19 +33,24 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
-        String imageUrl = mSearchResultList.get(position).getImageResult().get(0).getLink();
-        Picasso.get()
-                .load(imageUrl)
-                .into(holder.ivCover);
+        if (mSearchResultList.get(position).getImageResult() !=null &&
+                mSearchResultList.get(position).getImageResult().get(0) !=null) {
+            String imageUrl = mSearchResultList.get(position).getImageResult().get(0).getLink();
+            Picasso.get()
+                    .load(imageUrl)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .error(R.drawable.ic_launcher_foreground)
+                    .into(holder.ivCover);
 
-        holder.ivCover.setOnClickListener(view -> {
+            holder.ivCover.setOnClickListener(view -> {
 
-        });
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mSearchResultList.size();
+        return mSearchResultList == null ? 0 : mSearchResultList.size();
     }
 
     class SearchResultViewHolder extends RecyclerView.ViewHolder {
@@ -57,5 +61,10 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             super(itemView);
             ivCover = itemView.findViewById(R.id.iv_cover);
         }
+    }
+
+    public void setItems(List<SearchResult> searchResultList) {
+        mSearchResultList = searchResultList;
+        notifyDataSetChanged();
     }
 }

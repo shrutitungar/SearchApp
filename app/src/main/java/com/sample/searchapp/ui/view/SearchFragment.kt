@@ -12,6 +12,7 @@ import com.sample.searchapp.R
 import com.sample.searchapp.data.SearchResponse
 import com.sample.searchapp.data.SearchResult
 import com.sample.searchapp.data.remote.APIResponse
+import com.sample.searchapp.ui.adapter.GridSpacingItemDecoration
 import com.sample.searchapp.ui.adapter.SearchResultAdapter
 import com.sample.searchapp.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -34,9 +35,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchResultAdapter =
-            SearchResultAdapter(activity?.applicationContext, mSearchResultList)
+            SearchResultAdapter(activity?.applicationContext)
         rv_images.adapter = searchResultAdapter
         rv_images.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+        rv_images.addItemDecoration(GridSpacingItemDecoration(3, 20, false))
 
         /*search_layout.setOnClickListener {
             val translation = AnimationUtils.loadAnimation(
@@ -78,9 +80,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             APIResponse.Status.SUCCESS -> {
                 progress_bar.visibility = View.GONE
                 if (apiResponse.data != null) {
-                   var searchResponse : SearchResponse = apiResponse.data as SearchResponse
+                    var searchResponse: SearchResponse = apiResponse.data as SearchResponse
                     mSearchResultList = searchResponse.data
-                    searchResultAdapter.notifyDataSetChanged()
+                    searchResultAdapter.setItems(mSearchResultList)
                 }
             }
             APIResponse.Status.ERROR -> {
