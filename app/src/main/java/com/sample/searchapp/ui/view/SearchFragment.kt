@@ -1,4 +1,4 @@
-package com.sample.searchapp.ui
+package com.sample.searchapp.ui.view
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.sample.searchapp.R
 import com.sample.searchapp.data.SearchResponse
@@ -20,7 +21,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SearchFragment : Fragment(R.layout.fragment_search) {
+class SearchFragment : Fragment(R.layout.fragment_search),
+    SearchResultAdapter.OnSearchItemClickListener {
 
     private lateinit var searchResultAdapter: SearchResultAdapter
     private var mSearchResultList: List<SearchResult>? = ArrayList()
@@ -36,6 +38,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         super.onViewCreated(view, savedInstanceState)
         searchResultAdapter =
             SearchResultAdapter(activity?.applicationContext)
+        searchResultAdapter.setOnSearchItemClickListener(this)
         rv_images.adapter = searchResultAdapter
         rv_images.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
         rv_images.addItemDecoration(GridSpacingItemDecoration(3, 20, false))
@@ -80,8 +83,16 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             APIResponse.Status.SUCCESS -> {
                 progress_bar.visibility = View.GONE
                 if (apiResponse.data != null) {
-                    var searchResponse: SearchResponse = apiResponse.data as SearchResponse
-                    mSearchResultList = searchResponse.data
+                    val searchResponse: SearchResponse = apiResponse.data as SearchResponse
+                    mSearchResultList = ArrayList()
+                    searchResponse.data.forEach { searchRes ->
+                        searchRes.imageResult?.let {
+                            if (it[0].type.equals("image/png") || it[0].type.equals("image/jpeg")) {
+                                (mSearchResultList as ArrayList<SearchResult>).add(searchRes)
+                            }
+                        }
+                    }
+//                    mSearchResultList = searchResponse.data
                     searchResultAdapter.setItems(mSearchResultList)
                 }
             }
@@ -89,5 +100,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 progress_bar.visibility = View.GONE
             }
         }
+    }
+
+    override fun onImageClick(v: View, searchResult: SearchResult?) {
+        val action = SearchFragmentDirections.actionNavSearchToNavSearchDetails(searchResult)
+        v.findNavController().navigate(action)
     }
 }

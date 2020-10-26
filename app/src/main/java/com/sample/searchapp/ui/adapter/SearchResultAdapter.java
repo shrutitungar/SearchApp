@@ -17,6 +17,7 @@ import java.util.List;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder> {
 
+    private OnSearchItemClickListener mlistener;
     private Context mContext;
     private List<SearchResult> mSearchResultList;
 
@@ -33,17 +34,19 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
-        if (mSearchResultList.get(position).getImageResult() !=null &&
-                mSearchResultList.get(position).getImageResult().get(0) !=null) {
+        if (/*mSearchResultList.get(position).getImageResult() != null &&*/
+                mSearchResultList.get(position).getImageResult().get(0) != null) {
             String imageUrl = mSearchResultList.get(position).getImageResult().get(0).getLink();
             Picasso.get()
                     .load(imageUrl)
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_foreground)
+                    .resize(400, 400)
+//                    .centerCrop()
                     .into(holder.ivCover);
 
             holder.ivCover.setOnClickListener(view -> {
-
+                mlistener.onImageClick(holder.ivCover, mSearchResultList.get(position));
             });
         }
     }
@@ -66,5 +69,13 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
     public void setItems(List<SearchResult> searchResultList) {
         mSearchResultList = searchResultList;
         notifyDataSetChanged();
+    }
+
+    public interface OnSearchItemClickListener {
+        void onImageClick(View v, SearchResult searchResult);
+    }
+
+    public void setOnSearchItemClickListener(OnSearchItemClickListener listener) {
+        mlistener = listener;
     }
 }
