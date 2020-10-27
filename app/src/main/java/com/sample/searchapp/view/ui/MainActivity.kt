@@ -1,4 +1,4 @@
-package com.sample.searchapp.ui.view
+package com.sample.searchapp.view.ui
 
 import android.os.Bundle
 import android.view.View

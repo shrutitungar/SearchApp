@@ -1,4 +1,4 @@
-package com.sample.searchapp.ui.adapter;
+package com.sample.searchapp.view.adapter;
 
 import android.graphics.Rect;
 import android.view.View;

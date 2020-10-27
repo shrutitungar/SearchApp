@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SearchViewModel(application: Application) : BaseViewModel(application) {
 
-    private var searchRepository: SearchRepository? = SearchRepository()
+    private var searchRepository: SearchRepository? = SearchRepository(application)
     private val mSearchResultsLiveData: MutableLiveData<APIResponse> = MutableLiveData()
 
     //region get search results

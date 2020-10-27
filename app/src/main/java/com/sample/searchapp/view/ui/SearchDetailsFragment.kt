@@ -1,4 +1,4 @@
-package com.sample.searchapp.ui.view
+package com.sample.searchapp.view.ui
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.sample.searchapp.R
 import com.sample.searchapp.data.SearchResult
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_search_details.*
 
 class SearchDetailsFragment : Fragment(R.layout.fragment_search_details) {
@@ -22,6 +23,9 @@ class SearchDetailsFragment : Fragment(R.layout.fragment_search_details) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.toolbar?.title = mSearchResult?.title
+
         Picasso.get().load(mSearchResult?.imageResult?.get(0)?.link)
             .placeholder(R.mipmap.ic_launcher)
             .into(iv_detail)

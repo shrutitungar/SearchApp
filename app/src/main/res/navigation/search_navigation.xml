@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_search"
-        android:name="com.sample.searchapp.ui.view.SearchFragment"
+        android:name="com.sample.searchapp.view.ui.SearchFragment"
         tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_nav_search_to_nav_search_details"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/nav_search_details"
-        android:name="com.sample.searchapp.ui.view.SearchDetailsFragment"
+        android:name="com.sample.searchapp.view.ui.SearchDetailsFragment"
         tools:layout="@layout/fragment_search_details">
 
         <argument

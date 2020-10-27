@@ -1,4 +1,4 @@
-package com.sample.searchapp.ui.view
+package com.sample.searchapp.view.ui
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,8 +13,8 @@ import com.sample.searchapp.R
 import com.sample.searchapp.data.SearchResponse
 import com.sample.searchapp.data.SearchResult
 import com.sample.searchapp.data.remote.APIResponse
-import com.sample.searchapp.ui.adapter.GridSpacingItemDecoration
-import com.sample.searchapp.ui.adapter.SearchResultAdapter
+import com.sample.searchapp.view.adapter.GridSpacingItemDecoration
+import com.sample.searchapp.view.adapter.SearchResultAdapter
 import com.sample.searchapp.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.GlobalScope
@@ -79,25 +79,42 @@ class SearchFragment : Fragment(R.layout.fragment_search),
 
     private fun getSearchResponse(apiResponse: APIResponse) {
         when (apiResponse.status) {
-            APIResponse.Status.LOADING -> progress_bar.visibility = View.VISIBLE
+            APIResponse.Status.LOADING -> {
+                progress_bar.visibility = View.VISIBLE
+                rv_images.visibility = View.GONE
+                tv_error_msg.visibility = View.GONE
+            }
             APIResponse.Status.SUCCESS -> {
                 progress_bar.visibility = View.GONE
+
                 if (apiResponse.data != null) {
+                    rv_images.visibility = View.VISIBLE
+                    tv_error_msg.visibility = View.GONE
+
                     val searchResponse: SearchResponse = apiResponse.data as SearchResponse
-                    mSearchResultList = ArrayList()
-                    searchResponse.data.forEach { searchRes ->
-                        searchRes.imageResult?.let {
-                            if (it[0].type.equals("image/png") || it[0].type.equals("image/jpeg")) {
-                                (mSearchResultList as ArrayList<SearchResult>).add(searchRes)
+                    if (searchResponse.data.isNotEmpty()) {
+                        mSearchResultList = ArrayList()
+                        searchResponse.data.forEach { searchRes ->
+                            searchRes.imageResult?.let {
+                                if (it[0].type.equals("image/png") || it[0].type.equals("image/jpeg")) {
+                                    (mSearchResultList as ArrayList<SearchResult>).add(searchRes)
+                                }
                             }
                         }
+                        searchResultAdapter.setItems(mSearchResultList)
+                    } else {
+                        rv_images.visibility = View.GONE
+                        tv_error_msg.visibility = View.VISIBLE
                     }
-//                    mSearchResultList = searchResponse.data
-                    searchResultAdapter.setItems(mSearchResultList)
+                } else {
+                    rv_images.visibility = View.GONE
+                    tv_error_msg.visibility = View.VISIBLE
                 }
             }
             APIResponse.Status.ERROR -> {
                 progress_bar.visibility = View.GONE
+                rv_images.visibility = View.GONE
+                tv_error_msg.visibility = View.VISIBLE
             }
         }
     }
