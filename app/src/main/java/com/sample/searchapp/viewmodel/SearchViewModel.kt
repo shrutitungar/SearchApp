@@ -1,7 +1,9 @@
 package com.sample.searchapp.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.sample.searchapp.data.ImageResult
 import com.sample.searchapp.data.remote.APIResponse
 import com.sample.searchapp.repository.SearchRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -33,4 +35,10 @@ class SearchViewModel(application: Application) : BaseViewModel(application) {
             )?.let { disposables.add(it) }
     }
     //endregion
+
+    fun setImageInfo(imageResult: ImageResult) {
+        searchRepository?.setImageInfo(imageResult)
+    }
+
+    fun getImageInfo(id: String): LiveData<ImageResult>? = searchRepository?.getImageInfo(id)
 }

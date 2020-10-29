@@ -1,6 +1,7 @@
 package com.sample.searchapp.repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.sample.searchapp.data.ImageResult
 import com.sample.searchapp.data.SearchResponse
 import com.sample.searchapp.data.local.SearchAppDB
@@ -33,7 +34,9 @@ class SearchRepository(application: Application) : CoroutineScope {
         return mSearchAPIRemoteDataSource?.getSearchResponse(pageCount, query)
     }
 
-    fun getImageInfo(id: String) = mImageDAO?.getImageInfo(id)
+    fun getImageInfo(id: String): LiveData<ImageResult>? {
+        return mImageDAO?.getImageInfo(id)
+    }
 
     fun setImageInfo(imageResult: ImageResult) {
         launch {
