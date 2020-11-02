@@ -56,12 +56,16 @@ class SearchDetailsFragment : Fragment(R.layout.fragment_search_details) {
     }
 
     private fun getImageResult(imageResult: ImageResult) {
-        if (imageResult != null && !imageResult.comment.isNullOrBlank()) {
+        if (!imageResult.comment.isNullOrBlank()) {
             et_comment.visibility = View.GONE
             btn_submit.visibility = View.GONE
             tv_comment.visibility = View.VISIBLE
-            Log.e("comment", "* " + imageResult.comment)
             tv_comment.text = imageResult.comment
+        }
+        else {
+            et_comment.visibility = View.VISIBLE
+            btn_submit.visibility = View.VISIBLE
+            tv_comment.visibility = View.GONE
         }
     }
 }
